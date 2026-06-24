@@ -1,26 +1,146 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-fraunces);
   --font-mono: var(--font-geist-mono);
+
+  /* Brand colours — all reference swappable CSS variables so they respond to dark mode */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-primary: var(--primary-brand);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-hover: var(--primary-brand-hover);
+  --color-accent: var(--accent-brand);
+  --color-accent-hover: var(--accent-brand-hover);
+  --color-brand-border: var(--brand-border);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+
+  /* shadcn tokens */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-shadcn: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-shadcn: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Light theme (default) ---------- */
+:root {
+  color-scheme: light;
+
+  /* Brand */
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --surface-2: #f0ece4;
+  --ink: #1a1a1a;
+  --ink-muted: #5a5a5a;
+  --primary-brand: #1e3a5f;
+  --primary-fg: #1e3a5f;
+  --primary-brand-hover: #15293f;
+  --accent-brand: #a87c4f;
+  --accent-brand-hover: #8a6540;
+  --brand-border: #e5e0d6;
+  --success: #2f6f4f;
+  --danger: #9b2c2c;
+
+  /* shadcn */
+  --background: #faf8f4;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #1e3a5f;
+  --primary-foreground: #ffffff;
+  --secondary: #f0ece4;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f0ece4;
+  --muted-foreground: #5a5a5a;
+  --accent: #a87c4f;
+  --accent-foreground: #ffffff;
+  --destructive: #9b2c2c;
+  --border: #e5e0d6;
+  --input: #e5e0d6;
+  --ring: #1e3a5f;
+  --radius: 0.5rem;
+}
+
+/* ---------- Dark theme ---------- */
+.dark {
+  color-scheme: dark;
+
+  /* Brand — warm dark palette to match the cream/navy/brass identity */
+  --bg: #14120e;
+  --surface: #1d1a15;
+  --surface-2: #272219;
+  --ink: #f4f0e9;
+  --ink-muted: #a8a298;
+  --primary-brand: #3a6ea5;       /* button fill — white text reads ~5.3:1 */
+  --primary-fg: #8fb4e0;          /* navy used as text/ring/border — bright on dark */
+  --primary-brand-hover: #4a7eb5;
+  --accent-brand: #b5824f;
+  --accent-brand-hover: #9a7045;
+  --brand-border: #322d25;
+  --success: #5aa67c;
+  --danger: #e0726f;
+
+  /* shadcn */
+  --background: #14120e;
+  --foreground: #f4f0e9;
+  --card: #1d1a15;
+  --card-foreground: #f4f0e9;
+  --popover: #1d1a15;
+  --popover-foreground: #f4f0e9;
+  --primary: #3a6ea5;
+  --primary-foreground: #ffffff;
+  --secondary: #272219;
+  --secondary-foreground: #f4f0e9;
+  --muted: #272219;
+  --muted-foreground: #a8a298;
+  --accent: #2d2820;
+  --accent-foreground: #f4f0e9;
+  --destructive: #e0726f;
+  --border: #322d25;
+  --input: #3a342b;
+  --ring: #8fb4e0;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-bg text-ink font-sans;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-fraunces), Georgia, serif;
+  }
 }

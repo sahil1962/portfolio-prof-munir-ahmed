@@ -4,6 +4,7 @@ import { verifyTurnstile } from "@/lib/turnstile";
 import { checkAvailability, parseSlotValue } from "@/lib/calendar";
 import { getSessionPricing, getPackage, isGroupPackage, isInstantBookableSubject, isInstantBookablePackage } from "@/lib/pricing-lookup";
 import { getStripe } from "@/lib/stripe";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 const subjectLabel: Record<string, string> = {
   maths: "Mathematics",
@@ -13,6 +14,15 @@ const subjectLabel: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
+  // Throttle: 10 checkout attempts per IP per 10 minutes.
+  const limit = rateLimit(`checkout:${getClientIp(req)}`, 10, 10 * 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds ?? 60) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -81,7 +91,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "This slot is no longer available. Please choose another." }, { status: 409 });
   }
 
-  const origin = new URL(req.url).origin;
+  // Use the configured site URL rather than the request's own Host header,
+  // which is attacker-controllable when the route is called directly (not via the browser).
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
   const stripe = getStripe();
 
   const session = await stripe.checkout.sessions.create({

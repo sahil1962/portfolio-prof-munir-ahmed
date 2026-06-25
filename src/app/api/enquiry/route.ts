@@ -2,12 +2,22 @@ import { NextResponse } from "next/server";
 import { enquirySchema, subjectLabels } from "@/lib/enquiry-schema";
 import { getResend, FROM_EMAIL, TUTOR_EMAIL } from "@/lib/email";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { render } from "react-email";
 import TutorNotification from "@/components/emails/TutorNotification";
 import EnquirerConfirmation from "@/components/emails/EnquirerConfirmation";
 import React from "react";
 
 export async function POST(req: Request) {
+  // Throttle: 5 enquiries per IP per 10 minutes.
+  const limit = rateLimit(`enquiry:${getClientIp(req)}`, 5, 10 * 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds ?? 60) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();

@@ -3,10 +3,18 @@ import { sessionTimes } from "@/lib/enquiry-schema";
 
 const slotValues = sessionTimes.map((s) => s.value) as [string, ...string[]];
 
+// Header-safe text: rejects newlines so values can't smuggle extra headers
+// into emails built from raw template literals (e.g. `${name} <${email}>`).
+const headerSafeName = z
+  .string()
+  .min(2, "Please enter your name")
+  .max(100, "Name is too long")
+  .refine((s) => !/[\r\n]/.test(s), "Name contains invalid characters");
+
 const baseFields = {
-  name:        z.string().min(2, "Please enter your name"),
-  email:       z.string().email("Please enter a valid email"),
-  studentName: z.string().optional(),
+  name:        headerSafeName,
+  email:       z.string().email("Please enter a valid email").max(254),
+  studentName: z.string().max(100).refine((s) => !/[\r\n]/.test(s), "Invalid characters").optional(),
 
   slot:      z.enum(slotValues),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Please choose a start date"),

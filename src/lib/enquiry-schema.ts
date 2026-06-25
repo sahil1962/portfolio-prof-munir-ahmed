@@ -1,10 +1,18 @@
 import { z } from "zod";
 
+// Header-safe text: rejects newlines so values can't smuggle extra headers
+// into emails built from raw template literals (e.g. `${name} <${email}>`).
+const headerSafeName = z
+  .string()
+  .min(2, "Please enter your name")
+  .max(100, "Name is too long")
+  .refine((s) => !/[\r\n]/.test(s), "Name contains invalid characters");
+
 export const enquirySchema = z.object({
-  name:        z.string().min(2, "Please enter your name"),
-  email:       z.string().email("Please enter a valid email"),
-  phone:       z.string().optional(),
-  studentName: z.string().optional(),
+  name:        headerSafeName,
+  email:       z.string().email("Please enter a valid email").max(254),
+  phone:       z.string().max(40).optional(),
+  studentName: z.string().max(100).refine((s) => !/[\r\n]/.test(s), "Invalid characters").optional(),
   studentYear: z.string().min(1, "Please indicate year/age"),
   subject:     z.enum(["maths", "science", "a-level-physics", "research-methods"]),
   level:       z.string().min(1, "Please choose a level"),

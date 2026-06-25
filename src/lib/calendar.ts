@@ -9,7 +9,13 @@ export type SlotDay = "saturday" | "sunday";
 function getCalendarClient() {
   const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
   if (!keyJson) return null;
-  const credentials = JSON.parse(keyJson) as { client_email: string; private_key: string };
+  let credentials: { client_email: string; private_key: string };
+  try {
+    credentials = JSON.parse(keyJson);
+  } catch {
+    console.error("GOOGLE_SERVICE_ACCOUNT_KEY is not valid JSON — calendar features disabled.");
+    return null;
+  }
   const auth = new google.auth.JWT({
     email: credentials.client_email,
     key: credentials.private_key,

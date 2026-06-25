@@ -6,3 +6,8 @@ onlyBuiltDependencies:
   - esbuild
   - sharp
   - unrs-resolver
+# Force patched versions of vulnerable transitive deps (see `pnpm audit`).
+overrides:
+  ws: ">=8.21.0"
+  postcss: ">=8.5.10"
+  esbuild: ">=0.28.1"

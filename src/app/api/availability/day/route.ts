@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { checkDayAvailability, type SlotDay } from "@/lib/calendar";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 // Availability for all bookable times on the weekend date in `startDate`.
 // Returns { times: { "08:00": true, "09:00": false, … } }.
 export async function GET(req: Request) {
+  // Throttle: 60 day-availability checks per IP per minute.
+  const limit = rateLimit(`avail-day:${getClientIp(req)}`, 60, 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds ?? 60) } }
+    );
+  }
+
   const { searchParams } = new URL(req.url);
   const startDate = searchParams.get("startDate");
   const occurrencesRaw = searchParams.get("occurrences");

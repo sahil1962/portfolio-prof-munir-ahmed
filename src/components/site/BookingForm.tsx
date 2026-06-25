@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
-import Script from "next/script";
 
 interface BookingFormProps {
   defaultValues?: {
@@ -70,17 +69,39 @@ export default function BookingForm({ defaultValues }: BookingFormProps) {
     setValue("level", "");
   }, [subject, setValue]);
 
-  // Turnstile
+  // Turnstile — load the widget script client-side only. Rendering next/script in
+  // the JSX tree shifts SSR siblings and breaks hydration, so we inject it here instead.
   useEffect(() => {
-    if (!window.turnstile) return;
-    if (turnstileWidgetId) return;
     const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
     if (!siteKey) return;
-    const id = window.turnstile.render("#turnstile-container", {
-      sitekey: siteKey,
-      callback: (token: string) => setValue("turnstileToken", token),
-    });
-    setTurnstileWidgetId(id);
+
+    const renderWidget = () => {
+      if (!window.turnstile || turnstileWidgetId) return;
+      const el = document.getElementById("turnstile-container");
+      if (!el || el.childElementCount > 0) return;
+      const id = window.turnstile.render("#turnstile-container", {
+        sitekey: siteKey,
+        callback: (token: string) => setValue("turnstileToken", token),
+      });
+      setTurnstileWidgetId(id);
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const SCRIPT_ID = "cf-turnstile-script";
+    let script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement("script");
+      script.id = SCRIPT_ID;
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", renderWidget);
+    return () => script?.removeEventListener("load", renderWidget);
   }, [setValue, turnstileWidgetId]);
 
   async function onSubmit(data: EnquiryInput) {
@@ -113,20 +134,6 @@ export default function BookingForm({ defaultValues }: BookingFormProps) {
 
   return (
     <>
-      {siteKey && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="afterInteractive"
-          onLoad={() => {
-            if (!window.turnstile || turnstileWidgetId) return;
-            const id = window.turnstile.render("#turnstile-container", {
-              sitekey: siteKey,
-              callback: (token: string) => setValue("turnstileToken", token),
-            });
-            setTurnstileWidgetId(id);
-          }}
-        />
-      )}
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
         {/* Contact info */}

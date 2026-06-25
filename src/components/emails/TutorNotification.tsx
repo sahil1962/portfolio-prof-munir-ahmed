@@ -41,7 +41,9 @@ export default function TutorNotification({ data }: TutorNotificationProps) {
             <Heading as="h2" style={{ fontSize: "16px", color: "#1a1a1a", marginBottom: "12px" }}>
               Student details
             </Heading>
-            <Text style={{ margin: "0", fontSize: "14px" }}><strong>Student name:</strong> {data.studentName}</Text>
+            {data.studentName && data.studentName !== data.name && (
+              <Text style={{ margin: "0", fontSize: "14px" }}><strong>Student name:</strong> {data.studentName}</Text>
+            )}
             <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Year/age:</strong> {data.studentYear}</Text>
             <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Subject:</strong> {subjectLabels[data.subject] ?? data.subject}</Text>
             <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Level:</strong> {data.level}</Text>

@@ -34,7 +34,9 @@ export default function EnquirerConfirmation({ data }: EnquirerConfirmationProps
               Your submission
             </Heading>
             <Text style={{ margin: "0", fontSize: "14px", color: "#5a5a5a" }}><strong>Name:</strong> {data.name}</Text>
-            <Text style={{ margin: "4px 0 0", fontSize: "14px", color: "#5a5a5a" }}><strong>Student name:</strong> {data.studentName}</Text>
+            {data.studentName && data.studentName !== data.name && (
+              <Text style={{ margin: "4px 0 0", fontSize: "14px", color: "#5a5a5a" }}><strong>Student name:</strong> {data.studentName}</Text>
+            )}
             <Text style={{ margin: "4px 0 0", fontSize: "14px", color: "#5a5a5a" }}><strong>Year/age:</strong> {data.studentYear}</Text>
             <Text style={{ margin: "4px 0 0", fontSize: "14px", color: "#5a5a5a" }}><strong>Subject:</strong> {subjectLabels[data.subject] ?? data.subject}</Text>
             <Text style={{ margin: "4px 0 0", fontSize: "14px", color: "#5a5a5a" }}><strong>Level:</strong> {data.level}</Text>

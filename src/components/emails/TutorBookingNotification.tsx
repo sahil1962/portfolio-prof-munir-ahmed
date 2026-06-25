@@ -28,7 +28,9 @@ export default function TutorBookingNotification({ data }: TutorBookingNotificat
             </Heading>
             <Text style={{ margin: "0", fontSize: "14px" }}><strong>Name:</strong> {data.name}</Text>
             <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Email:</strong> {data.email}</Text>
-            <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Student name:</strong> {data.studentName}</Text>
+            {data.studentName && data.studentName !== data.name && (
+              <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Student name:</strong> {data.studentName}</Text>
+            )}
           </Section>
 
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />

@@ -14,7 +14,7 @@ import { CheckCircle } from "lucide-react";
 export const metadata: Metadata = {
   title: "Research Methods Tuition – Undergraduate to PhD | Dr Munir Ahmed",
   description:
-    "Online Research Methods support for undergraduate, MSc, PhD and DProf students. Proposal, dissertation and methodology guidance from £75/hour.",
+    "Online Research Methods support for undergraduate, MSc, PhD and DProf students. Proposal, dissertation and methodology guidance from £80/hour.",
   alternates: { canonical: "/subjects/research-methods" },
 };
 

@@ -13,7 +13,7 @@ import { CheckCircle } from "lucide-react";
 export const metadata: Metadata = {
   title: "Maths Tuition – KS2 to A-level | Dr Munir Ahmed",
   description:
-    "Online Maths tuition from KS2 to A-level. One-to-one from £50/hour, small group from £15/student/hour. Taught by Professor Dr Munir Ahmed.",
+    "Online Maths tuition from KS2 to A-level. One-to-one from £40/hour, small group from £10/student/hour. Taught by Professor Dr Munir Ahmed.",
   alternates: { canonical: "/subjects/maths" },
 };
 

@@ -35,7 +35,7 @@ function RowAction({ subject, row, className }: { subject: PricingTableProps["su
   if (isInstantBookableSubject(subject)) {
     return (
       <Link href={payNowHref(subject, row)} className={`font-medium text-primary-fg underline hover:no-underline ${className ?? ""}`}>
-        Pay now
+        Book now
       </Link>
     );
   }

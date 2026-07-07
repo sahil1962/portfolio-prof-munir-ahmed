@@ -14,7 +14,7 @@ import { CheckCircle } from "lucide-react";
 export const metadata: Metadata = {
   title: "Science Tuition – KS2 to GCSE | Dr Munir Ahmed",
   description:
-    "Online Science tuition from KS2 to GCSE. Biology, Chemistry, Physics and Combined Science. One-to-one from £50/hour.",
+    "Online Science tuition from KS2 to GCSE. Biology, Chemistry, Physics and Combined Science. One-to-one from £40/hour.",
   alternates: { canonical: "/subjects/science" },
 };
 

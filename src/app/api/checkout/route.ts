@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { checkoutSchema } from "@/lib/checkout-schema";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { checkAvailability, parseSlotValue } from "@/lib/calendar";
-import { getSessionPricing, getPackage, isGroupPackage, isInstantBookableSubject, isInstantBookablePackage } from "@/lib/pricing-lookup";
+import { getSessionPricing, getPackage, isGroupFormat, isGroupPackage, isInstantBookableSubject, isInstantBookablePackage } from "@/lib/pricing-lookup";
 import { getStripe } from "@/lib/stripe";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
@@ -68,8 +68,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unknown subject/level/format combination" }, { status: 400 });
     }
     occurrences = data.quantity;
-    amountPence = pricing.unitAmountPence * data.quantity;
-    description = `${subjectLabel[data.subject] ?? data.subject} — ${data.level} — ${data.format} × ${data.quantity}`;
+    // Group tuition fees are per student, and one nominated member pays for the whole
+    // group (per the booking conditions) — so total = per-student rate × lessons × group size.
+    const isGroup = isGroupFormat(data.format);
+    if (isGroup && !data.groupSize) {
+      return NextResponse.json({ error: "Group size is required for group tuition" }, { status: 400 });
+    }
+    const students = isGroup ? data.groupSize! : 1;
+    amountPence = pricing.unitAmountPence * data.quantity * students;
+    description = `${subjectLabel[data.subject] ?? data.subject} — ${data.level} — ${data.format} × ${data.quantity}${
+      students > 1 ? ` (group of ${students})` : ""
+    }`;
   } else {
     const pkg = getPackage(data.packageId);
     if (!pkg) {

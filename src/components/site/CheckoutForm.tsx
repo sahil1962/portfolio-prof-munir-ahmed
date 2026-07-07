@@ -243,7 +243,10 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
 
   const estimatedTotalPence = useMemo(() => {
     if (itemType === "session" && selectedSessionPricing && quantity) {
-      return selectedSessionPricing.unitAmountPence * quantity;
+      // Group sessions are per-student and one member pays for the whole group,
+      // so multiply by group size (matches the server + the package path below).
+      const students = isGroupFormat(selectedSessionPricing.format) ? (groupSize ?? 0) : 1;
+      return selectedSessionPricing.unitAmountPence * quantity * students;
     }
     if (itemType === "package" && selectedPackage) {
       const isGroupPkg = isGroupPackage(selectedPackage.id);

@@ -14,7 +14,7 @@ import { CheckCircle } from "lucide-react";
 export const metadata: Metadata = {
   title: "A-level Physics Tuition | Dr Munir Ahmed",
   description:
-    "Online A-level Physics tuition, exam preparation and practical skills support. One-to-one from £100/hour. Taught by Professor Dr Munir Ahmed.",
+    "Online A-level Physics tuition, exam preparation and practical skills support. One-to-one from £85/hour. Taught by Professor Dr Munir Ahmed.",
   alternates: { canonical: "/subjects/a-level-physics" },
 };
 

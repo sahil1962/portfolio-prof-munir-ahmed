@@ -14,7 +14,7 @@ import { Calendar } from "lucide-react";
 export const metadata: Metadata = {
   title: "Dr Munir Ahmed Tuition | Online Maths, Science, Physics & Research Methods",
   description:
-    "Online tuition in Maths, Science, A-level Physics and Research Methods by Professor Dr Munir Ahmed. Over 40 years of experience. One-to-one from £50/hour.",
+    "Online tuition in Maths, Science, A-level Physics and Research Methods by Professor Dr Munir Ahmed. Over 40 years of experience. One-to-one from £40/hour.",
   alternates: { canonical: "/" },
 };
 
@@ -22,25 +22,25 @@ const subjects = [
   {
     title: "Mathematics",
     description: "KS2 to A-level Maths tuition, covering all major exam boards with structured progression and personalised support.",
-    fromPrice: "£50/hour",
+    fromPrice: "£40/hour",
     href: "/subjects/maths",
   },
   {
     title: "Science",
     description: "KS2 to GCSE Science across Biology, Chemistry and Physics, including Combined and Triple Science.",
-    fromPrice: "£50/hour",
+    fromPrice: "£40/hour",
     href: "/subjects/science",
   },
   {
     title: "A-level Physics",
     description: "Specialist A-level Physics tuition, exam preparation and practical skills support from Year 12 to final exams.",
-    fromPrice: "£100/hour",
+    fromPrice: "£85/hour",
     href: "/subjects/a-level-physics",
   },
   {
     title: "Research Methods",
     description: "Undergraduate to PhD research methods support — proposal, dissertation, methodology and mixed methods.",
-    fromPrice: "£75/hour",
+    fromPrice: "£80/hour",
     href: "/subjects/research-methods",
   },
 ];

@@ -18,11 +18,22 @@ export interface BookingConfirmationData {
   cancellationPolicy: string;
 }
 
+/** UK timezone abbreviation ("BST" in summer, "GMT" in winter) for a given date. */
+function ukTimeZoneAbbr(dateISO: string): string {
+  try {
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", timeZoneName: "short" })
+      .formatToParts(new Date(`${dateISO}T12:00:00Z`));
+    return parts.find((p) => p.type === "timeZoneName")?.value ?? "UK time";
+  } catch {
+    return "UK time";
+  }
+}
+
 export function formatLesson(l: BookingLesson): string {
   try {
-    return `${formatDate(new Date(`${l.date}T00:00:00`), "EEE d MMM yyyy")} · ${l.time}`;
+    return `${formatDate(new Date(`${l.date}T00:00:00`), "EEE d MMM yyyy")} · ${l.time} ${ukTimeZoneAbbr(l.date)}`;
   } catch {
-    return `${l.date} · ${l.time}`;
+    return `${l.date} · ${l.time} UK time`;
   }
 }
 

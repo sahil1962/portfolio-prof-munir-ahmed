@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contact | Dr Munir Ahmed",
-  description: "Get in touch with Dr Munir Ahmed about tuition enquiries.",
+  title: "Contact | Professor Dr Munir Ahmed",
+  description: "Get in touch with Professor Dr Munir Ahmed about tuition enquiries.",
   alternates: { canonical: "/contact" },
 };
 
@@ -26,7 +26,7 @@ export default function ContactPage() {
             Book / enquire online
           </Link>
           <a
-            href="mailto:enquiries@munirahmedtuition.com"
+            href="mailto:info@osmosisacademy.com"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-brand-border bg-surface px-6 py-3 font-medium text-ink hover:border-primary-fg hover:text-primary-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg"
           >
             <Mail size={16} />

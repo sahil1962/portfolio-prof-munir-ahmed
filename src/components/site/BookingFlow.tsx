@@ -77,7 +77,7 @@ export default function BookingFlow({ defaultValues = {} }: BookingFlowProps) {
       <p className="mb-8 text-sm text-ink-muted">
         {mode === "pay"
           ? "Choose your session or package, pick a weekly slot, and pay securely online. Maths can be booked instantly; other subjects need email confirmation first."
-          : "Send a quick enquiry and Dr Ahmed will confirm availability — no payment yet. Best for Science, A-level Physics and Research Methods, or any question before booking."}
+          : "Send a quick enquiry and Professor Dr Munir Ahmed will confirm availability — no payment yet. Best for Science, A-level Physics and Research Methods, or any question before booking."}
       </p>
 
       {mode === "pay" ? (

@@ -5,7 +5,7 @@ import { getStripe } from "@/lib/stripe";
 import { CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Booking confirmed | Dr Munir Ahmed",
+  title: "Booking confirmed | Professor Dr Munir Ahmed",
   robots: { index: false },
 };
 

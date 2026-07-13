@@ -3,8 +3,8 @@ import Container from "@/components/site/Container";
 import { cancellationPolicy } from "@/content/copy";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Dr Munir Ahmed",
-  description: "Privacy policy for Dr Munir Ahmed Tuition website.",
+  title: "Privacy Policy | Professor Dr Munir Ahmed",
+  description: "Privacy policy for Professor Dr Munir Ahmed Tuition website.",
   alternates: { canonical: "/privacy" },
 };
 

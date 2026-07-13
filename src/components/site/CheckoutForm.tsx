@@ -269,7 +269,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
             <Mail size={18} className="mt-0.5 shrink-0 text-accent" />
             <p className="text-sm text-ink-muted">
               This subject is available <span className="font-medium text-ink">by request</span>. Send a quick
-              enquiry and Dr Ahmed will confirm availability — you&apos;ll be able to pay once he confirms.
+              enquiry and Professor Dr Munir Ahmed will confirm availability — you&apos;ll be able to pay once he confirms.
             </p>
           </div>
         )}
@@ -412,7 +412,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
               {errors.topicList && <p role="alert" className="mt-1 text-xs text-danger">{errors.topicList.message}</p>}
             </div>
             <p className="text-xs text-ink-muted">
-              Maths topics can be booked at any time; for other subjects the topic list is subject to Dr Ahmed&apos;s email confirmation.
+              Maths topics can be booked at any time; for other subjects the topic list is subject to Professor Dr Munir Ahmed&apos;s email confirmation.
             </p>
           </fieldset>
         </div>
@@ -429,7 +429,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
               Send an enquiry to confirm availability
             </button>
             <p className="text-center text-xs text-ink-muted">
-              You&apos;ll be able to pay once Dr Ahmed confirms availability.
+              You&apos;ll be able to pay once Professor Dr Munir Ahmed confirms availability.
             </p>
           </>
         ) : (

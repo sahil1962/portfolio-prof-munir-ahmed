@@ -7,7 +7,7 @@ import { tutorIntroParagraphs, cancellationPolicy } from "@/content/copy";
 import { groupConditions } from "@/content/groupConditions";
 
 export const metadata: Metadata = {
-  title: "Group Tuition | Dr Munir Ahmed",
+  title: "Group Tuition | Professor Dr Munir Ahmed",
   description:
     "Affordable small-group tuition for GCSE, A-level and Research Methods. Groups of 4–6 students. From £10 per student per hour.",
   alternates: { canonical: "/group-tuition" },
@@ -21,8 +21,8 @@ export default function GroupTuitionPage() {
           <h1 className="font-heading text-4xl font-bold text-ink md:text-5xl">Group tuition</h1>
 
           <div className="mt-6 max-w-3xl space-y-4">
-            <p className="text-ink-muted leading-relaxed">{tutorIntroParagraphs[1]}</p>
             <p className="text-ink-muted leading-relaxed">{tutorIntroParagraphs[2]}</p>
+            <p className="text-ink-muted leading-relaxed">{tutorIntroParagraphs[5]}</p>
           </div>
 
           {/* Worked example callout */}

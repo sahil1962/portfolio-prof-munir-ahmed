@@ -8,9 +8,9 @@ import type { TestimonialTag } from "@/content/testimonials";
 import TestimonialsFilter from "./TestimonialsFilter";
 
 export const metadata: Metadata = {
-  title: "Student Testimonials | Dr Munir Ahmed",
+  title: "Student Testimonials | Professor Dr Munir Ahmed",
   description:
-    "What students say about Dr Munir Ahmed's tuition. Students from Imperial College, Oxford, Cambridge, UCL, King's College and more.",
+    "What students say about Professor Dr Munir Ahmed's tuition. Students from Imperial College, Oxford, Cambridge, UCL, King's College and more.",
   alternates: { canonical: "/testimonials" },
 };
 

@@ -12,7 +12,7 @@ import { testimonials } from "@/content/testimonials";
 import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Research Methods Tuition – Undergraduate to PhD | Dr Munir Ahmed",
+  title: "Research Methods Tuition – Undergraduate to PhD | Professor Dr Munir Ahmed",
   description:
     "Online Research Methods support for undergraduate, MSc, PhD and DProf students. Proposal, dissertation and methodology guidance from £80/hour.",
   alternates: { canonical: "/subjects/research-methods" },
@@ -27,10 +27,17 @@ const courseJsonLd = {
 };
 
 const included = [
-  "Personalised diagnosis of weaknesses",
-  "Structured progression with notes after each session",
-  "Proposal and dissertation support",
-  "Direct academic mentoring",
+  "Support with research proposals, dissertations, theses and doctoral projects",
+  "Guidance on choosing and refining a suitable research topic",
+  "Help developing clear research aims, objectives and research questions",
+  "Support with literature review structure, critical writing and identifying research gaps",
+  "Guidance on qualitative, quantitative and mixed methods research design",
+  "Help choosing appropriate methodology, methods, sampling and data collection approaches",
+  "Support with questionnaires, interviews, surveys and case study design where appropriate",
+  "Guidance on validity, reliability, ethics and limitations",
+  "Support with data analysis planning and interpretation of findings",
+  "Feedback on structure, argument, academic writing and presentation of research ideas",
+  "Supervision-style academic mentoring to help students develop confidence and independence",
 ];
 
 const relatedPackages = packages.filter((p) => p.id.includes("research"));

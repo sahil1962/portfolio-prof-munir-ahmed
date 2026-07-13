@@ -22,6 +22,8 @@ export const mathsPricing: PricingRow[] = [
   { level: "GCSE Maths",     format: "Small group, 4–6 students",  fee: "£20/student/hour",  unitAmountPence: 2000 },
   { level: "A-level Maths",  format: "1-to-1 online",              fee: "£80/hour",          unitAmountPence: 8000 },
   { level: "A-level Maths",  format: "Small group, 4–6 students",  fee: "£25/student/hour",  unitAmountPence: 2500 },
+  { level: "GCSE Maths Exam Preparation",    format: "Intensive 1-to-1 revision",  fee: "£70/hour",   unitAmountPence: 7000 },
+  { level: "A-level Maths Exam Preparation", format: "Intensive 1-to-1 revision",  fee: "£100/hour",  unitAmountPence: 10000 },
 ];
 
 export const sciencePricing: PricingRow[] = [
@@ -31,6 +33,7 @@ export const sciencePricing: PricingRow[] = [
   { level: "KS3 Science",   subjects: "Biology, Chemistry, Physics",                      format: "Small group, 4–6 students", fee: "£15/student/hour", unitAmountPence: 1500 },
   { level: "GCSE Science",  subjects: "Biology, Chemistry, Physics / Combined Science",   format: "1-to-1 online",             fee: "£60/hour",         unitAmountPence: 6000 },
   { level: "GCSE Science",  subjects: "Biology, Chemistry, Physics / Combined Science",   format: "Small group, 4–6 students", fee: "£20/student/hour", unitAmountPence: 2000 },
+  { level: "GCSE Science Exam Preparation", subjects: "Biology, Chemistry, Physics",       format: "Intensive 1-to-1 revision", fee: "£70/hour",         unitAmountPence: 7000 },
 ];
 
 export const physicsPricing: PricingRow[] = [

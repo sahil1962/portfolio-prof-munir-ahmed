@@ -20,18 +20,18 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dr Munir Ahmed Tuition | Maths, Science, Physics & Research Methods",
-    template: "%s | Dr Munir Ahmed Tuition",
+    default: "Professor Dr Munir Ahmed Tuition | Maths, Science, Physics & Research Methods",
+    template: "%s | Professor Dr Munir Ahmed Tuition",
   },
   description:
     "Online tuition in Maths, Science, A-level Physics and Research Methods by Professor Dr Munir Ahmed. Over 40 years of teaching experience. One-to-one and small group sessions.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://munirahmedtuition.com"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://osmosisacademy.com"
   ),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    siteName: "Dr Munir Ahmed Tuition",
+    siteName: "Professor Dr Munir Ahmed Tuition",
   },
 };
 

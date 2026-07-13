@@ -66,7 +66,7 @@ export async function POST(req: Request) {
     resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: "We've received your enquiry — Dr Munir Ahmed Tuition",
+      subject: "We've received your enquiry — Professor Dr Munir Ahmed Tuition",
       html: enquirerHtml,
     }),
   ]);
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
   if (tutorFailed) console.error("Tutor notification failed:", failureReason(tutorResult));
   if (sendFailed(enquirerResult)) console.error("Enquirer confirmation failed:", failureReason(enquirerResult));
 
-  // The enquiry only counts as received if Dr Ahmed was actually notified.
+  // The enquiry only counts as received if Professor Dr Munir Ahmed was actually notified.
   // The enquirer's confirmation email is best-effort — a failure there is logged, not fatal.
   if (tutorFailed) {
     return NextResponse.json(

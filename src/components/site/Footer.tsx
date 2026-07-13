@@ -25,7 +25,7 @@ export default function Footer() {
       <Container className="py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <p className="font-heading text-lg font-semibold text-primary-fg">Dr Munir Ahmed Tuition</p>
+            <p className="font-heading text-lg font-semibold text-primary-fg">Professor Dr Munir Ahmed Tuition</p>
             <p className="mt-2 text-sm text-ink-muted">
               Online tuition in Maths, Science, A-level Physics and Research Methods. Available Saturdays and Sundays.
             </p>

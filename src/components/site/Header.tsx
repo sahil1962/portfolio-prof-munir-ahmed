@@ -28,7 +28,7 @@ export default function Header() {
             href="/"
             className="font-heading text-xl font-semibold text-primary-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg rounded"
           >
-            Dr Munir Ahmed
+            Professor Dr Munir Ahmed
           </Link>
 
           {/* Desktop nav */}

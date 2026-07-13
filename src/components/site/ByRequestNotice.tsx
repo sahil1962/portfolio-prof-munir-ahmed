@@ -13,7 +13,7 @@ export default function ByRequestNotice({ subject, subjectLabel }: ByRequestNoti
       <div className="text-sm">
         <p className="font-medium text-ink">{subjectLabel} tuition is available on request.</p>
         <p className="mt-1 text-ink-muted">
-          Please email to confirm availability before booking — once Dr Ahmed confirms, you&apos;ll be able to book and pay.{" "}
+          Please email to confirm availability before booking — once Professor Dr Munir Ahmed confirms, you&apos;ll be able to book and pay.{" "}
           <Link href={`/book?subject=${subject}&intent=enquire`} className="font-medium text-accent underline hover:no-underline">
             Email to confirm availability
           </Link>

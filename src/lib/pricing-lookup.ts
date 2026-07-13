@@ -31,7 +31,7 @@ export function isGroupPackage(packageId: string): boolean {
 /**
  * Which subjects can be booked & paid for instantly online.
  * Everything else is "by request": the student emails to confirm availability,
- * Dr Ahmed accepts, and only then takes payment.
+ * Professor Dr Munir Ahmed accepts, and only then takes payment.
  * To activate another subject for instant booking, add it here.
  */
 const INSTANT_BOOKABLE_SUBJECTS = new Set<string>(["maths"]);

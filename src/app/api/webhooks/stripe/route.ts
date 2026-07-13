@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
-import { blockRecurringSlot, parseSlotValue } from "@/lib/calendar";
-import { createRecurringMeeting } from "@/lib/zoom";
+import { blockRecurringSlot, blockTasterSlot, parseSlotValue } from "@/lib/calendar";
+import { createRecurringMeeting, createSingleMeeting } from "@/lib/zoom";
 import { getResend, FROM_EMAIL, TUTOR_EMAIL } from "@/lib/email";
 import { cancellationPolicy } from "@/content/copy";
-import { sessionTimes } from "@/lib/enquiry-schema";
+import { sessionTimes, subjectLabels } from "@/lib/enquiry-schema";
 import { render } from "react-email";
 import BookingConfirmation from "@/components/emails/BookingConfirmation";
 import TutorBookingNotification from "@/components/emails/TutorBookingNotification";
+import TasterConfirmation from "@/components/emails/TasterConfirmation";
+import TasterTutorNotification from "@/components/emails/TasterTutorNotification";
 import React from "react";
 
 export async function POST(req: Request) {
@@ -45,6 +47,76 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   const m = session.metadata ?? {};
+
+  // ── Initial Assessment & Taster Lesson — single one-off session ──
+  if (m.itemType === "taster") {
+    const tSlot = m.slot;
+    const tStartDate = m.startDate;
+    if (!tSlot || !tStartDate) {
+      console.error("Stripe webhook: missing taster metadata on session", session.id);
+      return NextResponse.json({ received: true });
+    }
+    const subjectLabel = subjectLabels[m.subject ?? ""] ?? m.subject ?? "";
+    const slotLabel = m.slotLabel ?? tSlot;
+
+    let joinUrl = "https://zoom.us/j/placeholder";
+    try {
+      const meeting = await createSingleMeeting({
+        topic: m.description || "Initial Assessment & Taster Lesson",
+        startDateISO: tStartDate,
+        time: tSlot,
+        durationMinutes: 60,
+      });
+      joinUrl = meeting.joinUrl;
+    } catch (err) {
+      console.error("Failed to create Zoom meeting for taster", session.id, err);
+    }
+
+    try {
+      await blockTasterSlot({
+        dateISO: tStartDate,
+        time: tSlot,
+        summary: `Taster — ${m.name ?? ""} (${subjectLabel})`,
+        description: `Initial Assessment & Taster Lesson. Booked by ${m.name} (${m.email}). Subject: ${subjectLabel}. Year/level: ${m.studentYear ?? ""}. Exam board: ${m.examBoard || "—"}. Focus: ${m.focus ?? ""}. Zoom: ${joinUrl}`,
+        tasterEmail: m.email ?? "",
+      });
+    } catch (err) {
+      console.error("Failed to block taster calendar slot", session.id, err);
+    }
+
+    try {
+      const resend = getResend();
+      const [studentHtml, tutorHtml] = await Promise.all([
+        render(React.createElement(TasterConfirmation, {
+          data: { name: m.name ?? "", subjectLabel, slotLabel, startDate: tStartDate, joinUrl, cancellationPolicy },
+        })),
+        render(React.createElement(TasterTutorNotification, {
+          data: { name: m.name ?? "", email: m.email ?? "", subjectLabel, studentYear: m.studentYear ?? "", examBoard: m.examBoard || undefined, focus: m.focus ?? "", slotLabel, startDate: tStartDate, joinUrl },
+        })),
+      ]);
+      await Promise.allSettled([
+        resend.emails.send({
+          from: FROM_EMAIL,
+          to: m.email,
+          subject: "Your Initial Assessment & Taster Lesson is confirmed — Professor Dr Munir Ahmed Tuition",
+          html: studentHtml,
+        }),
+        TUTOR_EMAIL
+          ? resend.emails.send({
+              from: FROM_EMAIL,
+              to: TUTOR_EMAIL,
+              replyTo: m.email ? `${m.name ?? ""} <${m.email}>`.trim() : undefined,
+              subject: `New taster booking — ${m.name ?? ""}`,
+              html: tutorHtml,
+            })
+          : Promise.resolve(),
+      ]);
+    } catch (err) {
+      console.error("Failed to send taster confirmation emails", session.id, err);
+    }
+
+    return NextResponse.json({ received: true });
+  }
 
   const slot = m.slot;
   const startDate = m.startDate;
@@ -108,7 +180,7 @@ export async function POST(req: Request) {
       resend.emails.send({
         from: FROM_EMAIL,
         to: m.email,
-        subject: "Your booking is confirmed — Dr Munir Ahmed Tuition",
+        subject: "Your booking is confirmed — Professor Dr Munir Ahmed Tuition",
         html: enquirerHtml,
       }),
       TUTOR_EMAIL

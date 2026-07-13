@@ -333,7 +333,7 @@ export default function BookingForm({ defaultValues }: BookingFormProps) {
               aria-describedby={errors.consent ? "consent-error" : undefined}
             />
             <span className="text-sm text-ink-muted">
-              I consent to Dr Munir Ahmed using the information provided above to respond to my tuition enquiry.
+              I consent to Professor Dr Munir Ahmed using the information provided above to respond to my tuition enquiry.
               Your data will not be shared with third parties or used for marketing.
             </span>
           </label>

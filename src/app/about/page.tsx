@@ -61,7 +61,7 @@ export default function AboutPage() {
 
       <section className="py-16 md:py-24 bg-surface">
         <Container>
-          <SectionHeading title="Why study with Dr Munir?" />
+          <SectionHeading title="Why study with Professor Dr Munir Ahmed?" />
           <div className="mt-10 space-y-8 max-w-3xl">
             {strengths.map((s) => (
               <StrengthRow key={s.strength} strength={s} />

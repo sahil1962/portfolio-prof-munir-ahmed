@@ -12,7 +12,7 @@ import { testimonials } from "@/content/testimonials";
 import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "A-level Physics Tuition | Dr Munir Ahmed",
+  title: "A-level Physics Tuition | Professor Dr Munir Ahmed",
   description:
     "Online A-level Physics tuition, exam preparation and practical skills support. One-to-one from £85/hour. Taught by Professor Dr Munir Ahmed.",
   alternates: { canonical: "/subjects/a-level-physics" },
@@ -27,10 +27,16 @@ const courseJsonLd = {
 };
 
 const included = [
-  "Personalised diagnosis of weaknesses",
-  "Structured progression with notes after each lesson",
-  "Exam strategy and past-paper work",
-  "Direct academic mentoring",
+  "Personalised assessment of the student's current level, strengths and areas for improvement",
+  "Clear explanation of difficult topics using step-by-step teaching",
+  "Structured lesson planning based on the student's exam board, syllabus and target grade",
+  "Focused support with weak areas, misconceptions and common exam mistakes",
+  "Guided practice with exam-style questions and past-paper questions where appropriate",
+  "Support with problem-solving, calculations, written answers and subject-specific terminology",
+  "Exam strategy, timing techniques and mark-scheme guidance",
+  "Notes, worked examples or lesson summaries after each lesson where appropriate",
+  "Regular progress monitoring so that lessons remain focused and purposeful",
+  "Direct academic mentoring to build confidence, independence and long-term study skills",
 ];
 
 const relatedPackages = packages.filter((p) => p.id.includes("physics"));
@@ -47,8 +53,14 @@ export default function ALevelPhysicsPage() {
         <Container>
           <h1 className="font-heading text-4xl font-bold text-ink md:text-5xl">A-level Physics Tuition</h1>
           <p className="mt-4 max-w-2xl text-lg text-ink-muted leading-relaxed">
-            Specialist A-level Physics tuition for Year 12 and Year 13. Includes exam preparation intensives
-            and practical skills support, delivered one-to-one or in small groups.
+            Specialist A-level Physics tuition for Year 12 and Year 13 students, covering all major UK and
+            international exam boards. Lessons support understanding of challenging Physics topics,
+            calculations, problem-solving, practical skills and exam technique.
+          </p>
+          <p className="mt-4 max-w-2xl text-lg text-ink-muted leading-relaxed">
+            For students preparing for tests, mocks or final exams, focused exam preparation lessons are
+            available. These include past-paper questions, exam technique, timing, common mistakes and
+            mark-scheme guidance.
           </p>
         </Container>
       </section>

@@ -4,8 +4,8 @@ import Container from "@/components/site/Container";
 import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Enquiry received | Dr Munir Ahmed",
-  description: "Your tuition enquiry has been received. Dr Munir will reply within 48 hours.",
+  title: "Enquiry received | Professor Dr Munir Ahmed",
+  description: "Your tuition enquiry has been received. Professor Dr Munir Ahmed will reply within 48 hours.",
   robots: { index: false },
 };
 
@@ -23,7 +23,7 @@ export default function ThankYouPage() {
             Thanks — we&apos;ve received your enquiry.
           </h1>
           <p className="mt-4 text-lg text-ink-muted">
-            Dr Munir will reply within 48 hours to confirm availability and next steps.
+            Professor Dr Munir Ahmed will reply within 48 hours to confirm availability and next steps.
           </p>
           <div className="mt-10">
             <Link

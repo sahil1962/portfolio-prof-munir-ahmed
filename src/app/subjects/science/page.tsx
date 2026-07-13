@@ -12,7 +12,7 @@ import { testimonials } from "@/content/testimonials";
 import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Science Tuition – KS2 to GCSE | Dr Munir Ahmed",
+  title: "Science Tuition – KS2 to GCSE | Professor Dr Munir Ahmed",
   description:
     "Online Science tuition from KS2 to GCSE. Biology, Chemistry, Physics and Combined Science. One-to-one from £40/hour.",
   alternates: { canonical: "/subjects/science" },
@@ -27,10 +27,16 @@ const courseJsonLd = {
 };
 
 const included = [
-  "Personalised diagnosis of weaknesses",
-  "Structured progression with notes after each lesson",
-  "Exam strategy and past-paper work",
-  "Direct academic mentoring",
+  "Personalised assessment of the student's current level, strengths and areas for improvement",
+  "Clear explanation of difficult topics using step-by-step teaching",
+  "Structured lesson planning based on the student's exam board, syllabus and target grade",
+  "Focused support with weak areas, misconceptions and common exam mistakes",
+  "Guided practice with exam-style questions and past-paper questions where appropriate",
+  "Support with problem-solving, calculations, written answers and subject-specific terminology",
+  "Exam strategy, timing techniques and mark-scheme guidance",
+  "Notes, worked examples or lesson summaries after each lesson where appropriate",
+  "Regular progress monitoring so that lessons remain focused and purposeful",
+  "Direct academic mentoring to build confidence, independence and long-term study skills",
 ];
 
 const relatedPackages = packages.filter((p) => p.id.includes("science") || p.id.includes("gcse"));
@@ -45,8 +51,15 @@ export default function SciencePage() {
         <Container>
           <h1 className="font-heading text-4xl font-bold text-ink md:text-5xl">Science Tuition</h1>
           <p className="mt-4 max-w-2xl text-lg text-ink-muted leading-relaxed">
-            Biology, Chemistry and Physics from KS2 to GCSE. Covering Combined Science and Triple Science
-            with tailored support for each student&apos;s exam board and syllabus.
+            Online Science tuition in Biology, Chemistry and Physics from KS2 to GCSE, including General
+            Science, Combined Science and Triple Science. Lessons are tailored to the student&apos;s syllabus,
+            exam board and areas of difficulty, helping students build understanding and confidence across
+            key science topics.
+          </p>
+          <p className="mt-4 max-w-2xl text-lg text-ink-muted leading-relaxed">
+            For students preparing for tests, mocks or final exams, focused exam preparation lessons are
+            available. These include past-paper questions, exam technique, timing, common mistakes and
+            mark-scheme guidance.
           </p>
         </Container>
       </section>

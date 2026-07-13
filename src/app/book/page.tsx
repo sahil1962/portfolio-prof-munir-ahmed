@@ -4,7 +4,7 @@ import SectionHeading from "@/components/site/SectionHeading";
 import BookingFlow from "@/components/site/BookingFlow";
 
 export const metadata: Metadata = {
-  title: "Book a lesson | Dr Munir Ahmed",
+  title: "Book a lesson | Professor Dr Munir Ahmed",
   description: "Book and pay for online Maths tuition, or enquire about Science, A-level Physics and Research Methods. Available Saturdays and Sundays.",
   alternates: { canonical: "/book" },
 };
@@ -47,7 +47,7 @@ async function BookContent({
         <div className="max-w-2xl mx-auto">
           <SectionHeading
             title="Book a lesson"
-            subtitle="Maths can be booked and paid for online. For Science, A-level Physics and Research Methods, send a quick enquiry and Dr Ahmed will confirm availability before you pay."
+            subtitle="Maths can be booked and paid for online. For Science, A-level Physics and Research Methods, send a quick enquiry and Professor Dr Munir Ahmed will confirm availability before you pay."
           />
           <div className="mt-10">
             <BookingFlow defaultValues={params} />

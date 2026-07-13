@@ -48,7 +48,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
           >
             Email to confirm availability
           </Link>
-          <p className="text-center text-xs text-ink-muted">Available on request — pay once Dr Ahmed confirms.</p>
+          <p className="text-center text-xs text-ink-muted">Available on request — pay once Professor Dr Munir Ahmed confirms.</p>
         </div>
       )}
     </div>

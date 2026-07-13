@@ -21,7 +21,7 @@ export default function EnquirerConfirmation({ data }: EnquirerConfirmationProps
             Hi {data.name},
           </Text>
           <Text style={{ fontSize: "15px", lineHeight: "1.6", color: "#1a1a1a", marginTop: "0" }}>
-            {`Thanks for your enquiry about ${subjectLabels[data.subject] ?? data.subject} tuition. We've received your request and Dr Munir will reply within 48 hours to confirm availability and next steps.`}
+            {`Thanks for your enquiry about ${subjectLabels[data.subject] ?? data.subject} tuition. We've received your request and Professor Dr Munir Ahmed will reply within 48 hours to confirm availability and next steps.`}
           </Text>
           <Text style={{ fontSize: "15px", lineHeight: "1.6", color: "#1a1a1a", marginTop: "0" }}>
             A copy of what you submitted is below for your records.

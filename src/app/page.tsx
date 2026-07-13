@@ -12,7 +12,7 @@ import { testimonials } from "@/content/testimonials";
 import { Calendar } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Dr Munir Ahmed Tuition | Online Maths, Science, Physics & Research Methods",
+  title: "Professor Dr Munir Ahmed Tuition | Online Maths, Science, Physics & Research Methods",
   description:
     "Online tuition in Maths, Science, A-level Physics and Research Methods by Professor Dr Munir Ahmed. Over 40 years of experience. One-to-one from £40/hour.",
   alternates: { canonical: "/" },
@@ -62,10 +62,16 @@ export default function HomePage() {
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                href="/book"
+                href="/taster"
                 className="rounded-lg bg-primary px-6 py-3 font-medium text-white hover:bg-primary-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg focus-visible:ring-offset-2"
               >
-                Book a lesson
+                Book initial assessment / taster
+              </Link>
+              <Link
+                href="/book"
+                className="rounded-lg border border-brand-border bg-surface px-6 py-3 font-medium text-ink hover:border-primary-fg hover:text-primary-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg"
+              >
+                Book lessons
               </Link>
               <Link
                 href="/packages"
@@ -90,10 +96,10 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Why Dr Munir */}
+      {/* Why Professor Dr Munir Ahmed */}
       <section className="py-16 md:py-24 bg-bg">
         <Container>
-          <SectionHeading title="Why study with Dr Munir?" />
+          <SectionHeading title="Why study with Professor Dr Munir Ahmed?" />
           <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
             {strengths.slice(0, 3).map((s) => (
               <StrengthRow key={s.strength} strength={s} />
@@ -104,7 +110,7 @@ export default function HomePage() {
               href="/about"
               className="text-sm font-medium text-primary-fg hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg rounded"
             >
-              Read more about Dr Munir →
+              Read more about Professor Dr Munir Ahmed →
             </Link>
           </div>
         </Container>

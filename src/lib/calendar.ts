@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 import { fromZonedTime } from "date-fns-tz";
 import { saturdaySchedule, sundaySchedule } from "@/content/schedule";
+import { tasterSlots, tasterSlotEndTime } from "@/content/taster";
 
 const TIMEZONE = "Europe/London";
 
@@ -178,6 +179,104 @@ export async function blockRecurringSlot(opts: {
       start: { dateTime: first.startUtc.toISOString(), timeZone: TIMEZONE },
       end: { dateTime: first.endUtc.toISOString(), timeZone: TIMEZONE },
       recurrence: [`RRULE:FREQ=WEEKLY;COUNT=${opts.occurrences}`],
+    },
+  });
+}
+
+// ── Initial Assessment & Taster Lesson — single one-off session ──────────────
+
+function buildTasterRange(dateISO: string, time: string): OccurrenceRange {
+  const end = tasterSlotEndTime(time);
+  if (!end) throw new Error(`Unknown taster slot: ${time}`);
+  return {
+    startUtc: fromZonedTime(`${dateISO}T${time}:00`, TIMEZONE),
+    endUtc: fromZonedTime(`${dateISO}T${end}:00`, TIMEZONE),
+  };
+}
+
+/** Availability for each taster time on a specific date → { "17:30": true, "18:30": false }. */
+export async function checkTasterAvailability(dateISO: string): Promise<Record<string, boolean>> {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  if (!calendar || !calendarId) {
+    return Object.fromEntries(tasterSlots.map((s) => [s.value, true])); // dev bypass
+  }
+
+  const ranges = tasterSlots.map((s) => ({ time: s.value, range: buildTasterRange(dateISO, s.value) }));
+  const min = Math.min(...ranges.map((r) => r.range.startUtc.getTime()));
+  const max = Math.max(...ranges.map((r) => r.range.endUtc.getTime()));
+
+  const res = await calendar.freebusy.query({
+    requestBody: {
+      timeMin: new Date(min).toISOString(),
+      timeMax: new Date(max).toISOString(),
+      items: [{ id: calendarId }],
+    },
+  });
+  const busy = res.data.calendars?.[calendarId]?.busy ?? [];
+
+  const out: Record<string, boolean> = {};
+  for (const { time, range } of ranges) {
+    out[time] = !busy.some((b) => {
+      const bs = new Date(b.start!).getTime();
+      const be = new Date(b.end!).getTime();
+      return range.startUtc.getTime() < be && range.endUtc.getTime() > bs;
+    });
+  }
+  return out;
+}
+
+/** True if the given taster time is free on that date (server-side re-check at checkout). */
+export async function checkTasterSlotFree(dateISO: string, time: string): Promise<boolean> {
+  const avail = await checkTasterAvailability(dateISO);
+  return avail[time] === true;
+}
+
+/** Has this email already booked a taster? (Enforces "once per student" — soft, fail-open.) */
+export async function hasExistingTaster(email: string): Promise<boolean> {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  if (!calendar || !calendarId) return false; // dev bypass — can't check, allow
+
+  try {
+    const res = await calendar.events.list({
+      calendarId,
+      privateExtendedProperty: [`tasterEmail=${email.trim().toLowerCase()}`],
+      maxResults: 1,
+      showDeleted: false,
+    });
+    return (res.data.items?.length ?? 0) > 0;
+  } catch (err) {
+    // Don't hard-block a paying customer over a calendar API hiccup — Dr Ahmed catches repeats manually.
+    console.error("Failed to check existing taster for", email, err);
+    return false;
+  }
+}
+
+/** Block a single taster session and tag it with the student's email for the once-per-student check. */
+export async function blockTasterSlot(opts: {
+  dateISO: string;
+  time: string;
+  summary: string;
+  description: string;
+  tasterEmail: string;
+}): Promise<void> {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  if (!calendar || !calendarId) {
+    console.warn("Google Calendar not configured — skipping taster block.");
+    return;
+  }
+
+  const range = buildTasterRange(opts.dateISO, opts.time);
+  await calendar.events.insert({
+    calendarId,
+    requestBody: {
+      summary: opts.summary,
+      description: opts.description,
+      start: { dateTime: range.startUtc.toISOString(), timeZone: TIMEZONE },
+      end: { dateTime: range.endUtc.toISOString(), timeZone: TIMEZONE },
+      extendedProperties: { private: { tasterEmail: opts.tasterEmail.trim().toLowerCase() } },
     },
   });
 }

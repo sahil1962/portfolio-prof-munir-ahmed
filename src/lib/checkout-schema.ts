@@ -16,7 +16,7 @@ const baseFields = {
   email:       z.string().email("Please enter a valid email").max(254),
   studentName: z.string().max(100).refine((s) => !/[\r\n]/.test(s), "Invalid characters").optional(),
 
-  slot:      z.enum(slotValues),
+  slot:      z.enum(slotValues, { errorMap: () => ({ message: "Please choose a time" }) }),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Please choose a start date"),
 
   groupSize:  z.coerce.number().int().min(4).max(6).optional(),

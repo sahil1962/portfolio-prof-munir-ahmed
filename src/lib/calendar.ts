@@ -280,3 +280,78 @@ export async function blockTasterSlot(opts: {
     },
   });
 }
+
+// ── Individually-picked lessons (date + time each) ──────────────────────────
+
+export type LessonSlot = { date: string; time: string };
+
+/** Build the UTC range for a single lesson (its slot's start/end from the schedule). */
+function buildLessonRange(dateISO: string, time: string): OccurrenceRange {
+  const match = saturdaySchedule.find((s) => s.bookable && s.time.startsWith(time));
+  if (!match) throw new Error(`Unknown lesson time: ${time}`);
+  const [start, end] = match.time.split("–");
+  return {
+    startUtc: fromZonedTime(`${dateISO}T${start}:00`, TIMEZONE),
+    endUtc: fromZonedTime(`${dateISO}T${end}:00`, TIMEZONE),
+  };
+}
+
+/** Check every picked lesson is free. Returns which (if any) are already taken. */
+export async function checkLessonsAvailable(
+  lessons: LessonSlot[]
+): Promise<{ allFree: boolean; taken: LessonSlot[] }> {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  if (!calendar || !calendarId || lessons.length === 0) return { allFree: true, taken: [] };
+
+  const ranges = lessons.map((l) => ({ lesson: l, range: buildLessonRange(l.date, l.time) }));
+  const min = Math.min(...ranges.map((r) => r.range.startUtc.getTime()));
+  const max = Math.max(...ranges.map((r) => r.range.endUtc.getTime()));
+
+  const res = await calendar.freebusy.query({
+    requestBody: {
+      timeMin: new Date(min).toISOString(),
+      timeMax: new Date(max).toISOString(),
+      items: [{ id: calendarId }],
+    },
+  });
+  const busy = res.data.calendars?.[calendarId]?.busy ?? [];
+
+  const taken = ranges
+    .filter(({ range }) =>
+      busy.some((b) => {
+        const bs = new Date(b.start!).getTime();
+        const be = new Date(b.end!).getTime();
+        return range.startUtc.getTime() < be && range.endUtc.getTime() > bs;
+      })
+    )
+    .map((r) => r.lesson);
+
+  return { allFree: taken.length === 0, taken };
+}
+
+/** Block each picked lesson as its own single calendar event (all sharing the booking details). */
+export async function blockLessons(
+  lessons: LessonSlot[],
+  opts: { summary: string; description: string }
+): Promise<void> {
+  const calendar = getCalendarClient();
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  if (!calendar || !calendarId) {
+    console.warn("Google Calendar not configured — skipping lesson blocks.");
+    return;
+  }
+
+  for (const l of lessons) {
+    const range = buildLessonRange(l.date, l.time);
+    await calendar.events.insert({
+      calendarId,
+      requestBody: {
+        summary: opts.summary,
+        description: opts.description,
+        start: { dateTime: range.startUtc.toISOString(), timeZone: TIMEZONE },
+        end: { dateTime: range.endUtc.toISOString(), timeZone: TIMEZONE },
+      },
+    });
+  }
+}

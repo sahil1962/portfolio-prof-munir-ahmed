@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
-import { blockRecurringSlot, blockTasterSlot, parseSlotValue } from "@/lib/calendar";
-import { createRecurringMeeting, createSingleMeeting } from "@/lib/zoom";
+import { blockLessons, blockTasterSlot } from "@/lib/calendar";
+import { createReusableMeeting, createSingleMeeting } from "@/lib/zoom";
 import { getResend, FROM_EMAIL, TUTOR_EMAIL } from "@/lib/email";
 import { cancellationPolicy } from "@/content/copy";
-import { sessionTimes, subjectLabels } from "@/lib/enquiry-schema";
+import { subjectLabels } from "@/lib/enquiry-schema";
 import { render } from "react-email";
 import BookingConfirmation from "@/components/emails/BookingConfirmation";
 import TutorBookingNotification from "@/components/emails/TutorBookingNotification";
@@ -118,52 +118,44 @@ export async function POST(req: Request) {
     return NextResponse.json({ received: true });
   }
 
-  const slot = m.slot;
-  const startDate = m.startDate;
-  const occurrences = parseInt(m.occurrences ?? "0", 10);
+  // Regular booking — a set of individually-dated lessons ("2026-07-18 08:00, 2026-07-25 09:00, …").
+  const lessons = (m.lessons ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => {
+      const [date, time] = s.split(" ");
+      return { date, time };
+    })
+    .filter((l) => l.date && l.time);
 
-  if (!slot || !startDate || !occurrences) {
-    console.error("Stripe webhook: missing booking metadata on session", session.id);
+  if (lessons.length === 0) {
+    console.error("Stripe webhook: missing lessons metadata on session", session.id);
     return NextResponse.json({ received: true });
   }
 
-  const { day, time } = parseSlotValue(slot);
-  const slotLabel = sessionTimes.find((s) => s.value === slot)?.label ?? slot;
-
   let joinUrl = "https://zoom.us/j/placeholder";
   try {
-    const meeting = await createRecurringMeeting({
-      topic: m.description || "Tuition session",
-      day,
-      time,
-      startDateISO: startDate,
-      occurrences,
-    });
+    const meeting = await createReusableMeeting(m.description || "Tuition lessons");
     joinUrl = meeting.joinUrl;
   } catch (err) {
     console.error("Failed to create Zoom meeting for session", session.id, err);
   }
 
   try {
-    await blockRecurringSlot({
-      day,
-      time,
-      startDateISO: startDate,
-      occurrences,
-      summary: `${m.description ?? "Tuition session"} — ${m.studentName ?? ""}`,
+    await blockLessons(lessons, {
+      summary: `${m.description ?? "Tuition"} — ${m.studentName ?? ""}`,
       description: `Booked by ${m.name} (${m.email}). Student: ${m.studentName}. Zoom: ${joinUrl}${m.topicList ? `\nTopics: ${m.topicList}` : ""}`,
     });
   } catch (err) {
-    console.error("Failed to block recurring calendar slot for session", session.id, err);
+    console.error("Failed to block lessons for session", session.id, err);
   }
 
   const emailData = {
     name: m.name ?? "",
     studentName: m.studentName ?? "",
     description: m.description ?? "",
-    slotLabel,
-    startDate,
-    occurrences,
+    lessons,
     joinUrl,
     groupSize: m.groupSize || undefined,
     cancellationPolicy,

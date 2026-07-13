@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { checkoutSchema } from "@/lib/checkout-schema";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { checkAvailability, parseSlotValue } from "@/lib/calendar";
-import { getSessionPricing, getPackage, isGroupFormat, isGroupPackage, isInstantBookableSubject, isInstantBookablePackage } from "@/lib/pricing-lookup";
+import { checkLessonsAvailable } from "@/lib/calendar";
+import { getSessionPricing, getPackage, getLessonBounds, isGroupFormat, isGroupPackage, isInstantBookableSubject, isInstantBookablePackage } from "@/lib/pricing-lookup";
 import { getStripe } from "@/lib/stripe";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
@@ -37,7 +37,6 @@ export async function POST(req: Request) {
   const data = parsed.data;
 
   // Hard gate: only instantly-bookable items (Maths) may be paid through checkout.
-  // Everything else is by request — confirmed and paid for via a separate arrangement after enquiry.
   const instant =
     data.itemType === "session"
       ? isInstantBookableSubject(data.subject)
@@ -57,9 +56,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Captcha verification failed. Please try again." }, { status: 400 });
   }
 
-  // Compute authoritative price + occurrences server-side
+  // Enforce the lesson-count bounds server-side (client can't relax them).
+  const bounds = getLessonBounds({
+    itemType: data.itemType,
+    format: data.itemType === "session" ? data.format : undefined,
+    packageId: data.itemType === "package" ? data.packageId : undefined,
+  });
+  const count = data.lessons.length;
+  if (count < bounds.min || count > bounds.max) {
+    return NextResponse.json({ error: `Please choose between ${bounds.min} and ${bounds.max} lessons.` }, { status: 400 });
+  }
+
+  // Compute the authoritative price server-side.
   let amountPence: number;
-  let occurrences: number;
   let description: string;
 
   if (data.itemType === "session") {
@@ -67,16 +76,14 @@ export async function POST(req: Request) {
     if (!pricing) {
       return NextResponse.json({ error: "Unknown subject/level/format combination" }, { status: 400 });
     }
-    occurrences = data.quantity;
-    // Group tuition fees are per student, and one nominated member pays for the whole
-    // group (per the booking conditions) — so total = per-student rate × lessons × group size.
+    // Group fees are per student, and one member pays for the whole group → rate × lessons × group size.
     const isGroup = isGroupFormat(data.format);
     if (isGroup && !data.groupSize) {
       return NextResponse.json({ error: "Group size is required for group tuition" }, { status: 400 });
     }
     const students = isGroup ? data.groupSize! : 1;
-    amountPence = pricing.unitAmountPence * data.quantity * students;
-    description = `${subjectLabel[data.subject] ?? data.subject} — ${data.level} — ${data.format} × ${data.quantity}${
+    amountPence = pricing.unitAmountPence * count * students;
+    description = `${subjectLabel[data.subject] ?? data.subject} — ${data.level} — ${data.format} × ${count} lesson${count > 1 ? "s" : ""}${
       students > 1 ? ` (group of ${students})` : ""
     }`;
   } else {
@@ -84,7 +91,6 @@ export async function POST(req: Request) {
     if (!pkg) {
       return NextResponse.json({ error: "Unknown package" }, { status: 400 });
     }
-    occurrences = pkg.occurrences;
     amountPence = isGroupPackage(pkg.id) ? pkg.amountPence * (data.groupSize ?? 0) : pkg.amountPence;
     description = `${pkg.name} (${pkg.structure})`;
   }
@@ -93,17 +99,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Could not determine a valid price for this booking" }, { status: 400 });
   }
 
-  // Re-validate availability at the point of payment to close the race window
-  const { day, time } = parseSlotValue(data.slot);
-  const available = await checkAvailability(day, time, data.startDate, occurrences);
-  if (!available) {
-    return NextResponse.json({ error: "This slot is no longer available. Please choose another." }, { status: 409 });
+  // Re-validate every lesson is still free at the point of payment (closes the race window).
+  const { allFree, taken } = await checkLessonsAvailable(data.lessons);
+  if (!allFree) {
+    const list = taken.map((l) => `${l.date} ${l.time}`).join(", ");
+    return NextResponse.json(
+      { error: `Some lessons are no longer available (${list}). Please pick different times.`, taken },
+      { status: 409 }
+    );
   }
 
-  // Use the configured site URL rather than the request's own Host header,
-  // which is attacker-controllable when the route is called directly (not via the browser).
+  // Use the configured site URL rather than the request's own Host header.
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
   const stripe = getStripe();
+
+  // Compact list of lessons for the webhook (well under Stripe's 500-char metadata limit for ≤10 lessons).
+  const lessonsMeta = data.lessons.map((l) => `${l.date} ${l.time}`).join(", ");
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -120,20 +131,18 @@ export async function POST(req: Request) {
     ],
     customer_email: data.email,
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/checkout`,
+    cancel_url: `${origin}/book`,
     metadata: {
       itemType: data.itemType,
       name: data.name,
       email: data.email,
       studentName: data.studentName?.trim() || data.name,
-      slot: data.slot,
-      startDate: data.startDate,
-      occurrences: String(occurrences),
+      lessons: lessonsMeta,
       groupSize: data.groupSize ? String(data.groupSize) : "",
       topicList: (data.topicList ?? "").slice(0, 500),
       description,
       ...(data.itemType === "session"
-        ? { subject: data.subject, level: data.level, format: data.format, quantity: String(data.quantity) }
+        ? { subject: data.subject, level: data.level, format: data.format }
         : { packageId: data.packageId }),
     },
   });

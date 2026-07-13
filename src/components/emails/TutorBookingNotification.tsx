@@ -1,7 +1,7 @@
 import {
   Html, Head, Body, Container, Heading, Text, Hr, Section, Link,
 } from "@react-email/components";
-import type { BookingConfirmationData } from "@/components/emails/BookingConfirmation";
+import { formatLesson, type BookingConfirmationData } from "@/components/emails/BookingConfirmation";
 
 interface TutorBookingNotificationProps {
   data: BookingConfirmationData & { email: string; topicList?: string };
@@ -37,12 +37,12 @@ export default function TutorBookingNotification({ data }: TutorBookingNotificat
 
           <Section>
             <Heading as="h2" style={{ fontSize: "16px", color: "#1a1a1a", marginBottom: "12px" }}>
-              Schedule
+              Lessons ({data.lessons.length}) — UK time
             </Heading>
-            <Text style={{ margin: "0", fontSize: "14px" }}><strong>Weekly slot:</strong> {data.slotLabel}</Text>
-            <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>First lesson:</strong> {data.startDate}</Text>
-            <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Number of lessons:</strong> {data.occurrences}</Text>
-            {data.groupSize && <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Group size:</strong> {data.groupSize}</Text>}
+            {data.lessons.map((l, i) => (
+              <Text key={i} style={{ margin: "2px 0", fontSize: "14px" }}>• {formatLesson(l)}</Text>
+            ))}
+            {data.groupSize && <Text style={{ margin: "8px 0 0", fontSize: "14px" }}><strong>Group size:</strong> {data.groupSize}</Text>}
             {data.topicList && <Text style={{ margin: "4px 0 0", fontSize: "14px" }}><strong>Topics:</strong> {data.topicList}</Text>}
           </Section>
 

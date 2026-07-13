@@ -75,6 +75,40 @@ export async function createRecurringMeeting(opts: {
   return { joinUrl: data.join_url as string, meetingId: data.id as number };
 }
 
+/** One reusable meeting link (recurring, no fixed time) — used for a booking of individually-dated lessons. */
+export async function createReusableMeeting(topic: string): Promise<{ joinUrl: string; meetingId: number }> {
+  const zoomAccountId = process.env.ZOOM_ACCOUNT_ID;
+  if (!zoomAccountId) {
+    return { joinUrl: "https://zoom.us/j/placeholder", meetingId: 0 };
+  }
+
+  const accessToken = await getZoomAccessToken();
+
+  const res = await fetch("https://api.zoom.us/v2/users/me/meetings", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      topic,
+      type: 3, // recurring meeting with no fixed time — one link, reusable for every lesson
+      timezone: "Europe/London",
+      settings: {
+        join_before_host: true,
+        waiting_room: false,
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Zoom meeting creation failed: ${res.status} ${await res.text()}`);
+  }
+
+  const data = await res.json();
+  return { joinUrl: data.join_url as string, meetingId: data.id as number };
+}
+
 /** A single, non-recurring scheduled meeting (used for the one-off taster session). */
 export async function createSingleMeeting(opts: {
   topic: string;

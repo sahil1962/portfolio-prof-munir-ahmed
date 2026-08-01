@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/site/Container";
 import SectionHeading from "@/components/site/SectionHeading";
+import TasterBanner from "@/components/site/TasterBanner";
 import PricingTable from "@/components/site/PricingTable";
 import PackageCard from "@/components/site/PackageCard";
 import TestimonialCard from "@/components/site/TestimonialCard";
@@ -39,7 +40,7 @@ const included = [
   "Direct academic mentoring to build confidence, independence and long-term study skills",
 ];
 
-const relatedPackages = packages.filter((p) => p.id.includes("science") || p.id.includes("gcse"));
+const relatedPackages = packages.filter((p) => p.id.includes("science") && !p.id.includes("math"));
 const relatedTestimonials = testimonials.filter((t) => t.tags.includes("GCSE"));
 
 export default function SciencePage() {
@@ -61,6 +62,8 @@ export default function SciencePage() {
             available. These include past-paper questions, exam technique, timing, common mistakes and
             mark-scheme guidance.
           </p>
+          <TasterBanner className="mt-8" />
+
         </Container>
       </section>
 

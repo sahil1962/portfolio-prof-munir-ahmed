@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Container from "@/components/site/Container";
 import SectionHeading from "@/components/site/SectionHeading";
 import StrengthRow from "@/components/site/StrengthRow";
@@ -38,12 +39,15 @@ export default function AboutPage() {
           </h1>
 
           <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-5">
-            {/* Photo placeholder */}
+            {/* Photo */}
             <div className="md:col-span-2">
-              <div
-                className="w-full rounded-xl bg-brand-border"
-                style={{ aspectRatio: "4/5" }}
-                aria-label="Photo placeholder"
+              <Image
+                src="/professor-dr-munir-ahmed.jpg"
+                alt="Professor Dr Munir Ahmed"
+                width={739}
+                height={555}
+                priority
+                className="w-full rounded-xl border border-brand-border object-cover"
               />
             </div>
 

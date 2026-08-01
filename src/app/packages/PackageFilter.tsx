@@ -19,7 +19,8 @@ export default function PackageFilter({ current }: PackageFilterProps) {
     } else {
       params.set("level", level);
     }
-    router.push(`/packages?${params.toString()}`);
+    // scroll: false keeps the user where they are instead of jumping to the top.
+    router.push(`/packages?${params.toString()}`, { scroll: false });
   }
 
   return (

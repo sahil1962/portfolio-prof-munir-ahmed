@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     }
     const students = isGroup ? data.groupSize! : 1;
     amountPence = pricing.unitAmountPence * count * students;
-    description = `${subjectLabel[data.subject] ?? data.subject} — ${data.level} — ${data.format} × ${count} lesson${count > 1 ? "s" : ""}${
+    description = `${subjectLabel[data.subject] ?? data.subject}: ${data.level}, ${data.format} × ${count} lesson${count > 1 ? "s" : ""}${
       students > 1 ? ` (group of ${students})` : ""
     }`;
   } else {

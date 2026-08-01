@@ -23,8 +23,8 @@ export default function TasterConfirmation({ data }: { data: TasterConfirmationD
 
           <Text style={{ fontSize: "15px", lineHeight: "1.6", color: "#1a1a1a" }}>Hi {data.name},</Text>
           <Text style={{ fontSize: "15px", lineHeight: "1.6", color: "#1a1a1a", marginTop: "0" }}>
-            Thank you for your payment. Your 60-minute introductory session — a 30-minute initial assessment
-            followed by a 30-minute taster lesson — is confirmed.
+            Thank you for your payment. Your 60-minute introductory session is confirmed: a 30-minute initial assessment
+            followed by a 30-minute taster lesson.
           </Text>
 
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />

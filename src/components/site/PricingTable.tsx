@@ -70,10 +70,10 @@ export default function PricingTable({ rows, showSubjects = false, subject }: Pr
               <tr key={i} className="bg-surface hover:bg-bg transition-colors">
                 <td className="px-4 py-3 font-medium text-ink">{row.level}</td>
                 {hasSubjects && (
-                  <td className="px-4 py-3 text-ink-muted">{"subjects" in row ? (row as PricingRow).subjects ?? "—" : "—"}</td>
+                  <td className="px-4 py-3 text-ink-muted">{"subjects" in row ? (row as PricingRow).subjects ?? "-" : "-"}</td>
                 )}
                 {hasResearch && (
-                  <td className="px-4 py-3 text-ink-muted">{isResearchRow(row) ? row.suitableFor : "—"}</td>
+                  <td className="px-4 py-3 text-ink-muted">{isResearchRow(row) ? row.suitableFor : "-"}</td>
                 )}
                 <td className="px-4 py-3 text-ink-muted">{row.format}</td>
                 <td className="px-4 py-3 text-right font-semibold text-primary-fg">{row.fee}</td>

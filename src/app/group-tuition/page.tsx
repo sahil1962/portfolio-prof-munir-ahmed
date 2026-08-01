@@ -30,7 +30,7 @@ export default function GroupTuitionPage() {
             <p className="text-sm font-semibold text-accent uppercase tracking-wide">Example</p>
             <p className="mt-2 text-ink-muted leading-relaxed">
               A group of 4–6 GCSE students booking the 10-lesson Small Group GCSE Package pays{" "}
-              <strong className="text-ink">£175 per student total</strong> — cheaper than the £20/student/hour
+              <strong className="text-ink">£175 per student total</strong>, cheaper than the £20/student/hour
               standard small-group rate (£200 per student over 10 lessons). One nominated group member pays the
               full group total at checkout and settles shares with the rest of the group separately.
             </p>

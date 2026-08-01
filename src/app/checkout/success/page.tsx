@@ -49,8 +49,8 @@ async function SuccessContent({
               <CheckCircle2 size={48} className="mx-auto text-green-600" />
               <SectionHeading title="Booking confirmed" centered className="mt-4" />
               <p className="mt-4 text-ink-muted">
-                {description && <>Thank you — your payment for <strong>{description}</strong> was successful.</>}
-                {!description && "Thank you — your payment was successful."}
+                {description && <>Thank you. Your payment for <strong>{description}</strong> was successful.</>}
+                {!description && "Thank you. Your payment was successful."}
                 {" "}A confirmation email with your Zoom link has been sent{email ? ` to ${email}` : ""}.
               </p>
             </>

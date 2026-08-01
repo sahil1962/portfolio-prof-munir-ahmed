@@ -19,7 +19,7 @@ export default function TestimonialsFilter({ tags, current }: TestimonialsFilter
     } else {
       params.set("tag", tag);
     }
-    router.push(`/testimonials?${params.toString()}`);
+    router.push(`/testimonials?${params.toString()}`, { scroll: false });
   }
 
   return (

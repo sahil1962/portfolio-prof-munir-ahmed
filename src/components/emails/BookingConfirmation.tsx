@@ -63,7 +63,7 @@ export default function BookingConfirmation({ data }: { data: BookingConfirmatio
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />
 
           <Section>
-            <Heading as="h2" style={{ fontSize: "15px", color: "#1a1a1a", marginBottom: "10px" }}>Your lessons ({n}) — UK time</Heading>
+            <Heading as="h2" style={{ fontSize: "15px", color: "#1a1a1a", marginBottom: "10px" }}>Your lessons ({n}), UK time</Heading>
             {data.lessons.map((l, i) => (
               <Text key={i} style={{ margin: "2px 0", fontSize: "14px", color: "#5a5a5a" }}>• {formatLesson(l)}</Text>
             ))}

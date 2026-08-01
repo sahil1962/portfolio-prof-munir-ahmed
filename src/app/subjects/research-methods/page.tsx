@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/site/Container";
 import SectionHeading from "@/components/site/SectionHeading";
+import TasterBanner from "@/components/site/TasterBanner";
 import PricingTable from "@/components/site/PricingTable";
 import PackageCard from "@/components/site/PackageCard";
 import TestimonialCard from "@/components/site/TestimonialCard";
@@ -58,6 +59,8 @@ export default function ResearchMethodsPage() {
             dissertations, methodology and mixed methods, taught by someone trained in Mixed Methods Research
             at the University of Oxford.
           </p>
+          <TasterBanner className="mt-8" />
+
         </Container>
       </section>
 

@@ -41,7 +41,7 @@ export default function ScheduleTable({ slots, day }: ScheduleTableProps) {
                     Request
                   </Link>
                 ) : (
-                  <span className="text-xs text-ink-muted">—</span>
+                  <span className="text-xs text-ink-muted">-</span>
                 )}
               </td>
             </tr>

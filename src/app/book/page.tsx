@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Container from "@/components/site/Container";
 import SectionHeading from "@/components/site/SectionHeading";
 import BookingFlow from "@/components/site/BookingFlow";
+import TasterBanner from "@/components/site/TasterBanner";
 
 export const metadata: Metadata = {
   title: "Book a lesson | Professor Dr Munir Ahmed",
@@ -44,11 +45,13 @@ async function BookContent({
   return (
     <section className="py-16 md:py-24 bg-bg">
       <Container>
-        <div className="max-w-2xl mx-auto">
+        <div>
           <SectionHeading
             title="Book a lesson"
             subtitle="Maths can be booked and paid for online. For Science, A-level Physics and Research Methods, send a quick enquiry and Professor Dr Munir Ahmed will confirm availability before you pay."
           />
+          <TasterBanner className="mt-8" />
+
           <div className="mt-10">
             <BookingFlow defaultValues={params} />
           </div>

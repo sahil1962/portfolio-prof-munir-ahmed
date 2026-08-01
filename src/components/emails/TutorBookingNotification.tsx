@@ -17,7 +17,7 @@ export default function TutorBookingNotification({ data }: TutorBookingNotificat
             New paid booking
           </Heading>
           <Text style={{ color: "#5a5a5a", marginTop: "0" }}>
-            {data.description} — {data.name}
+            {data.description} for {data.name}
           </Text>
 
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />
@@ -37,7 +37,7 @@ export default function TutorBookingNotification({ data }: TutorBookingNotificat
 
           <Section>
             <Heading as="h2" style={{ fontSize: "16px", color: "#1a1a1a", marginBottom: "12px" }}>
-              Lessons ({data.lessons.length}) — UK time
+              Lessons ({data.lessons.length}), UK time
             </Heading>
             {data.lessons.map((l, i) => (
               <Text key={i} style={{ margin: "2px 0", fontSize: "14px" }}>• {formatLesson(l)}</Text>
@@ -61,7 +61,7 @@ export default function TutorBookingNotification({ data }: TutorBookingNotificat
             <>
               <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />
               <Text style={{ fontSize: "13px", color: "#a87c4f", marginTop: "0" }}>
-                Group booking — one payment covers the whole group; the payer is responsible for collecting shares from other members.
+                Group booking: one payment covers the whole group; the payer is responsible for collecting shares from other members.
               </Text>
             </>
           )}

@@ -76,8 +76,8 @@ export async function POST(req: Request) {
       await blockTasterSlot({
         dateISO: tStartDate,
         time: tSlot,
-        summary: `Taster — ${m.name ?? ""} (${subjectLabel})`,
-        description: `Initial Assessment & Taster Lesson. Booked by ${m.name} (${m.email}). Subject: ${subjectLabel}. Year/level: ${m.studentYear ?? ""}. Exam board: ${m.examBoard || "—"}. Focus: ${m.focus ?? ""}. Zoom: ${joinUrl}`,
+        summary: `Taster: ${m.name ?? ""} (${subjectLabel})`,
+        description: `Initial Assessment & Taster Lesson. Booked by ${m.name} (${m.email}). Subject: ${subjectLabel}. Year/level: ${m.studentYear ?? ""}. Exam board: ${m.examBoard || "Not given"}. Focus: ${m.focus ?? ""}. Zoom: ${joinUrl}`,
         tasterEmail: m.email ?? "",
       });
     } catch (err) {
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
               from: FROM_EMAIL,
               to: TUTOR_EMAIL,
               replyTo: m.email ? `${m.name ?? ""} <${m.email}>`.trim() : undefined,
-              subject: `New taster booking — ${m.name ?? ""}`,
+              subject: `New taster booking: ${m.name ?? ""}`,
               html: tutorHtml,
             })
           : Promise.resolve(),
@@ -144,7 +144,7 @@ export async function POST(req: Request) {
 
   try {
     await blockLessons(lessons, {
-      summary: `${m.description ?? "Tuition"} — ${m.studentName ?? ""}`,
+      summary: `${m.description ?? "Tuition"} for ${m.studentName ?? ""}`,
       description: `Booked by ${m.name} (${m.email}). Student: ${m.studentName}. Zoom: ${joinUrl}${m.topicList ? `\nTopics: ${m.topicList}` : ""}`,
     });
   } catch (err) {
@@ -180,7 +180,7 @@ export async function POST(req: Request) {
             from: FROM_EMAIL,
             to: TUTOR_EMAIL,
             replyTo: m.email ? `${m.name ?? ""} <${m.email}>`.trim() : undefined,
-            subject: `New paid booking — ${m.description ?? ""} — ${m.name ?? ""}`,
+            subject: `New paid booking: ${m.description ?? ""} (${m.name ?? ""})`,
             html: tutorHtml,
           })
         : Promise.resolve(),

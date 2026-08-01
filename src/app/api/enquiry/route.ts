@@ -59,7 +59,7 @@ export async function POST(req: Request) {
           from: FROM_EMAIL,
           to: TUTOR_EMAIL,
           replyTo: `${data.name} <${data.email}>`,
-          subject: `New enquiry — ${subjectLabel} (${data.level}) — ${data.name}`,
+          subject: `New enquiry: ${subjectLabel} (${data.level}) from ${data.name}`,
           html: tutorHtml,
         })
       : Promise.resolve({ data: null, error: null }),

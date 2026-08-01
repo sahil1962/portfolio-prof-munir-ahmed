@@ -38,7 +38,7 @@ export default function PrivacyPage() {
 
           <h2 className="font-heading text-2xl font-semibold text-ink mt-8">Paid bookings</h2>
           <p className="text-ink-muted mt-3 leading-relaxed">
-            If you pay for a session or package, your payment is processed securely by Stripe — we do not store
+            If you pay for a session or package, your payment is processed securely by Stripe. We do not store
             your card details. To schedule and run your lessons, your name, email, student name, and chosen
             weekly slot are shared with Google Calendar (to reserve the slot) and Zoom (to create your recurring
             meeting link). {cancellationPolicy}

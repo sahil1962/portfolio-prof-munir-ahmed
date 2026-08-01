@@ -20,7 +20,7 @@ export default function ThankYouPage() {
             </div>
           </div>
           <h1 className="font-heading text-3xl font-bold text-ink md:text-4xl">
-            Thanks — we&apos;ve received your enquiry.
+            Thanks, we&apos;ve received your enquiry.
           </h1>
           <p className="mt-4 text-lg text-ink-muted">
             Professor Dr Munir Ahmed will reply within 48 hours to confirm availability and next steps.

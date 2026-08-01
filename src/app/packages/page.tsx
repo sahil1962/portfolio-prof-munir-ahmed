@@ -56,7 +56,7 @@ async function PackagesContent({
             <div>
               <p className="font-heading text-lg font-semibold text-ink">New students: Initial Assessment &amp; Taster Lesson</p>
               <p className="mt-1 text-sm text-ink-muted">
-                A one-off 60-minute introductory session — a 30-minute assessment plus a 30-minute taster lesson.
+                A one-off 60-minute introductory session: a 30-minute assessment plus a 30-minute taster lesson.
                 {" "}{TASTER_PRICE_LABEL}, available once per student.
               </p>
             </div>
@@ -64,13 +64,13 @@ async function PackagesContent({
               href="/taster"
               className="shrink-0 self-start rounded-lg bg-accent px-5 py-2.5 font-medium text-white hover:bg-accent-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fg focus-visible:ring-offset-2 sm:self-auto"
             >
-              Book taster — {TASTER_PRICE_LABEL}
+              Book taster ({TASTER_PRICE_LABEL})
             </Link>
           </div>
 
           <SectionHeading
             title="Per-hour rates"
-            subtitle="Individual lessons billed per hour. Maths can be booked and paid instantly; Science, A-level Physics and Research Methods are available by request — enquire to confirm availability first."
+            subtitle="Individual lessons billed per hour. Maths can be booked and paid instantly; Science, A-level Physics and Research Methods are available by request. Enquire to confirm availability first."
           />
           <div className="mt-10 space-y-12">
             {perHourRates.map((r) => (
@@ -90,7 +90,7 @@ async function PackagesContent({
         <Container>
           <SectionHeading
             title="Tuition packages"
-            subtitle="Flexible lesson bundles designed for GCSE, A-level, research and group learners — cheaper than booking the same lessons individually."
+            subtitle="Flexible lesson bundles designed for GCSE, A-level, research and group learners, cheaper than booking the same lessons individually."
           />
           <div className="mt-8">
             <PackageFilter current={level ?? "All"} />

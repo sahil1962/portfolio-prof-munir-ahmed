@@ -207,7 +207,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
     if (!pickISO || lessons.length >= lessonCount || hasLesson(time)) return;
     if (dayAvail && dayAvail[time] === false) return;
     setValue("lessons", [...lessons, { date: pickISO, time }], { shouldValidate: true });
-    setToast(`Added — ${formatDate(new Date(`${pickISO}T00:00:00`), "EEE d MMM")} at ${time}`);
+    setToast(`Added: ${formatDate(new Date(`${pickISO}T00:00:00`), "EEE d MMM")} at ${time}`);
     setTimeout(() => setToast(null), 2000);
   }
   function removeLesson(l: Lesson) {
@@ -294,7 +294,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
             <Mail size={18} className="mt-0.5 shrink-0 text-accent" />
             <p className="text-sm text-ink-muted">
               This subject is available <span className="font-medium text-ink">by request</span>. Send a quick
-              enquiry and Professor Dr Munir Ahmed will confirm availability — you&apos;ll be able to pay once he confirms.
+              enquiry and Professor Dr Munir Ahmed will confirm availability. You&apos;ll be able to pay once he confirms.
             </p>
           </div>
         )}
@@ -373,7 +373,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
                     <SelectContent>
                       {formatsForLevel.map((row) => (
                         <SelectItem key={row.format} value={row.format}>
-                          {row.format} — {row.fee}
+                          {row.format} ({row.fee})
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -398,7 +398,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
                     </SelectTrigger>
                     <SelectContent>
                       {packages.map((pkg) => (
-                        <SelectItem key={pkg.id} value={pkg.id}>{pkg.name} — {pkg.fee}</SelectItem>
+                        <SelectItem key={pkg.id} value={pkg.id}>{pkg.name} ({pkg.fee})</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -479,7 +479,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
               <div>
                 <Label>How many lessons?{exact ? "" : ` (${bounds.min}–${bounds.max})`} *</Label>
                 {exact ? (
-                  <p className="mt-1 text-sm text-ink">{bounds.min} lessons — included in this package.</p>
+                  <p className="mt-1 text-sm text-ink">{bounds.min} lessons, included in this package.</p>
                 ) : (
                   <div className="mt-1 flex items-center gap-3">
                     <button type="button" onClick={() => changeCount(lessonCount - 1)} disabled={lessonCount <= bounds.min}
@@ -490,7 +490,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
                   </div>
                 )}
                 <p className="mt-1.5 text-xs text-ink-muted">
-                  Now pick a date and time for each of your {lessonCount} lesson{lessonCount > 1 ? "s" : ""} — they can be on different days and times. Weekends only; UK time.
+                  Now pick a date and time for each of your {lessonCount} lesson{lessonCount > 1 ? "s" : ""}. They can be on different days and times. Weekends only; UK time.
                 </p>
               </div>
 
@@ -505,7 +505,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
 
                 {/* Time */}
                 <div>
-                  <Label>Add a time {pickISO && <span className="font-normal text-ink-muted">— {formatDate(new Date(`${pickISO}T00:00:00`), "EEE d MMM")}</span>}</Label>
+                  <Label>Add a time {pickISO && <span className="font-normal text-ink-muted">({formatDate(new Date(`${pickISO}T00:00:00`), "EEE d MMM")})</span>}</Label>
                   {!pickDate && <p className="mt-2 text-sm text-ink-muted">Choose a date to see available times.</p>}
                   {pickDate && loadingTimes && (
                     <p className="mt-2 flex items-center gap-2 text-sm text-ink-muted"><Loader2 size={16} className="animate-spin" /> Checking availability…</p>
@@ -569,7 +569,7 @@ export default function CheckoutForm({ defaultValues, onEnquireInstead }: Checko
                 <ul className="mt-3 space-y-2">
                   {sortedLessons.length === 0 && (
                     <li className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-brand-border px-3 py-5 text-sm text-ink-muted">
-                      <CalendarDays size={16} /> No lessons yet — pick a date and time above.
+                      <CalendarDays size={16} /> No lessons yet. Pick a date and time above.
                     </li>
                   )}
                   {sortedLessons.map((l) => (

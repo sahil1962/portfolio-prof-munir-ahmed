@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That time is no longer available. Please choose another." }, { status: 409 });
   }
 
-  const description = `Initial Assessment & Taster Lesson — ${subjectLabel[data.subject] ?? data.subject}`;
+  const description = `Initial Assessment & Taster Lesson: ${subjectLabel[data.subject] ?? data.subject}`;
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
   const stripe = getStripe();
 

@@ -17,7 +17,7 @@ export default function TutorNotification({ data }: TutorNotificationProps) {
             New enquiry received
           </Heading>
           <Text style={{ color: "#5a5a5a", marginTop: "0" }}>
-            {subjectLabels[data.subject] ?? data.subject} ({data.level}) — {data.name}
+            {subjectLabels[data.subject] ?? data.subject} ({data.level}) from {data.name}
           </Text>
 
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />

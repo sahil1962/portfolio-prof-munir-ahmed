@@ -39,7 +39,7 @@ const subjects = [
   },
   {
     title: "Research Methods",
-    description: "Undergraduate to PhD research methods support — proposal, dissertation, methodology and mixed methods.",
+    description: "Undergraduate to PhD research methods support: proposal, dissertation, methodology and mixed methods.",
     fromPrice: "£80/hour",
     href: "/subjects/research-methods",
   },

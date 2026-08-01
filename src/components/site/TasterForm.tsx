@@ -253,7 +253,7 @@ export default function TasterForm() {
                             : "border-brand-border bg-surface hover:border-primary-fg hover:text-primary-fg"
                       }`}
                     >
-                      {s.label}{taken ? " — booked" : ""}
+                      {s.label}{taken ? " (booked)" : ""}
                     </button>
                   );
                 })}
@@ -270,7 +270,7 @@ export default function TasterForm() {
       {/* Price + cancellation */}
       <div className="rounded-lg border border-brand-border bg-surface p-4">
         <p className="text-sm text-ink">
-          <strong>Initial Assessment &amp; Taster Lesson — {TASTER_PRICE_LABEL}</strong> (one 60-minute session, available once per student).
+          <strong>Initial Assessment &amp; Taster Lesson: {TASTER_PRICE_LABEL}</strong> (one 60-minute session, available once per student).
         </p>
       </div>
       <div className="rounded-lg border border-brand-border bg-bg p-4">

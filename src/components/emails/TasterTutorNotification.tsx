@@ -22,7 +22,7 @@ export default function TasterTutorNotification({ data }: { data: TasterTutorDat
         <Container style={{ maxWidth: "600px", margin: "40px auto", backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e5e0d6", padding: "32px" }}>
           <Heading style={{ color: "#1e3a5f", fontSize: "22px", marginBottom: "8px" }}>New taster booking</Heading>
           <Text style={{ color: "#5a5a5a", marginTop: "0" }}>
-            Initial Assessment &amp; Taster Lesson — {data.name}
+            Initial Assessment &amp; Taster Lesson for {data.name}
           </Text>
 
           <Hr style={{ borderColor: "#e5e0d6", margin: "24px 0" }} />

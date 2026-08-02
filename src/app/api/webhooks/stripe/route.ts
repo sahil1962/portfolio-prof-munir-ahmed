@@ -127,7 +127,9 @@ export async function POST(req: Request) {
       const [date, time] = s.split(" ");
       return { date, time };
     })
-    .filter((l) => l.date && l.time);
+    .filter((l) => l.date && l.time)
+    // Show lessons in chronological order in the calendar and emails.
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
   if (lessons.length === 0) {
     console.error("Stripe webhook: missing lessons metadata on session", session.id);
